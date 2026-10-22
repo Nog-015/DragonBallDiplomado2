@@ -1,0 +1,20 @@
+<h2 class="mb-6 text-xl font-semibold">Planetas</h2>
+
+@if (resultado.error()) {
+  <p class="text-red-700">No se pudieron cargar los planetas.</p>
+} @else if (resultado.isLoading()) {
+  <p class="text-stone-500">Cargando...</p>
+} @else {
+  <section class="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-4">
+    @for (planeta of resultado.value()?.items; track planeta.id) {
+      <app-planeta-card [planeta]="planeta" />
+    } @empty {
+      <p class="col-span-full text-stone-500">No hay planetas.</p>
+    }
+  </section>
+  <app-paginador
+    [pagina]="pagina()"
+    [totalPaginas]="resultado.value()?.meta?.totalPages ?? 1"
+    (cambio)="pagina.set($event)"
+  />
+}
